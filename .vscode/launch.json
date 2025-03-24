@@ -1,0 +1,37 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Launch Backend",
+        "type": "coreclr",
+        "request": "launch",
+        "preLaunchTask": "build",
+        "program": "${workspaceFolder}/backend/TaskFlow.API/bin/Debug/net9.0/TaskFlow.API.dll",
+        "args": [],
+        "cwd": "${workspaceFolder}/backend/TaskFlow.API",
+        "env": {
+          "ASPNETCORE_ENVIRONMENT": "Development"
+        }
+      },
+      {
+        "name": "Launch Frontend",
+        "type": "node",
+        "request": "launch",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["run", "start"],
+        "cwd": "${workspaceFolder}/frontend/taskflow-frontend",
+        "port": 3000,
+        "serverReadyAction": {
+          "action": "openExternally",
+          "pattern": "\\bCompiled successfully!",
+          "uriFormat": "http://localhost:%s"
+        }
+      }
+    ],
+    "compounds": [
+      {
+        "name": "Launch Full Stack",
+        "configurations": ["Launch Backend", "Launch Frontend"]
+      }
+    ]
+  }
