@@ -1,42 +1,25 @@
 {
-	"version": "0.2.0",
-	"configurations": [
-	  {
-		"name": "Launch Backend",
-		"type": "coreclr",
-		"request": "launch",
-		"preLaunchTask": "build", 
-		"program": "${workspaceFolder}/backend/TaskFlow.API/bin/Debug/net9.0/TaskFlow.API.dll",
-		"args": [],
-		"cwd": "${workspaceFolder}/backend/TaskFlow.API",
-		"env": {
-		  "ASPNETCORE_ENVIRONMENT": "Development"
-		},
-		"serverReadyAction": {
-		  "action": "openExternally",
-		  "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
-		  "uriFormat": "%s"
-		}
-	  },
-	  {
-		"name": "Launch Frontend",
-		"type": "node",
-		"request": "launch",
-		"runtimeExecutable": "npm",
-		"runtimeArgs": ["run", "start"],
-		"cwd": "${workspaceFolder}/frontend/taskflow-frontend",
-		"port": 3000,
-		"serverReadyAction": {
-		  "action": "openExternally",
-		  "pattern": "\\bCompiled successfully!",
-		  "uriFormat": "http://localhost:%s"
-		}
-	  }
-	],
-	"compounds": [
-	  {
-		"name": "Launch Full Stack",
-		"configurations": ["Launch Backend", "Launch Frontend"]
-	  }
-	]
-  }
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": ["build", "${workspaceFolder}/backend/taskflow-api"],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "start-frontend",
+            "type": "shell",
+            "command": "npm",
+            "args": ["start"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/frontend/taskflow-web"
+            }
+        }
+    ]
+}

@@ -1,37 +1,37 @@
 {
-    "version": "0.2.0",
-    "configurations": [
+  "version": "0.2.0",
+  "configurations": [
       {
-        "name": "Launch Backend",
-        "type": "coreclr",
-        "request": "launch",
-        "preLaunchTask": "build",
-        "program": "${workspaceFolder}/backend/TaskFlow.API/bin/Debug/net9.0/TaskFlow.API.dll",
-        "args": [],
-        "cwd": "${workspaceFolder}/backend/TaskFlow.API",
-        "env": {
-          "ASPNETCORE_ENVIRONMENT": "Development"
-        }
+          "name": "Launch Backend",
+          "type": "coreclr",
+          "request": "launch",
+          "preLaunchTask": "build",
+          "program": "${workspaceFolder}/backend/taskflow-api/bin/Debug/net9.0/TaskFlow.API.dll",
+          "args": [],
+          "cwd": "${workspaceFolder}/backend/taskflow-api",
+          "env": {
+              "ASPNETCORE_ENVIRONMENT": "Development"
+          },
+          // "serverReadyAction": {
+          //     "action": "openExternally",
+          //     "pattern": "\\bNow listening on:\\s+(https?://\\S+)",
+          //     "uriFormat": "%s"
+          // }
       },
       {
         "name": "Launch Frontend",
-        "type": "node",
+        "type": "pwa-chrome",
         "request": "launch",
-        "runtimeExecutable": "npm",
-        "runtimeArgs": ["run", "start"],
-        "cwd": "${workspaceFolder}/frontend/taskflow-frontend",
-        "port": 3000,
-        "serverReadyAction": {
-          "action": "openExternally",
-          "pattern": "\\bCompiled successfully!",
-          "uriFormat": "http://localhost:%s"
-        }
-      }
-    ],
-    "compounds": [
+        "runtimeExecutable": "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder}/frontend/taskflow-web",
+        "preLaunchTask": "start-frontend"
+    }
+  ],
+  "compounds": [
       {
-        "name": "Launch Full Stack",
-        "configurations": ["Launch Backend", "Launch Frontend"]
+          "name": "Launch Full Stack",
+          "configurations": ["Launch Backend", "Launch Frontend"]
       }
-    ]
-  }
+  ]
+}
