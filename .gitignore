@@ -366,7 +366,6 @@ FodyWeavers.xsd
 backend/bin/
 backend/obj/
 backend/.vs/
-backend/appsettings.json
 
 # Frontend
 frontend/node_modules/
