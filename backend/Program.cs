@@ -18,9 +18,27 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowLocalFrontend",
+        builder =>
+        {
+            builder.WithOrigins("http://localhost:3000") 
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+        });
+});
+
 
 var app = builder.Build();
+
+app.UseCors("AllowLocalFrontend");
 
 // Configure the HTTP request pipeline.
 
