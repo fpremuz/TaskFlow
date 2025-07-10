@@ -73,5 +73,19 @@ namespace TaskFlow.Controllers
 
             return NoContent();
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateProject(int id, [FromBody] ProjectUpdateDto dto)
+        {
+            var project = await _context.Projects.FindAsync(id);
+            if (project == null) return NotFound();
+
+            project.Name = dto.Name;
+            project.Description = dto.Description;
+            project.Deadline = dto.Deadline;
+
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
     }
 }

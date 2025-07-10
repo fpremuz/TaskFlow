@@ -42,6 +42,7 @@ export default function ProjectsPage() {
                 key={project.id}
                 project={project}
                 onDelete={fetchProjects}
+                onUpdate={fetchProjects}
               />
             ))}
           </div>
