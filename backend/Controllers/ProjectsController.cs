@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using TaskFlow.Data;
 using TaskFlow.Models;
 using TaskFlow.Models.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TaskFlow.Controllers
 {
@@ -18,10 +19,20 @@ namespace TaskFlow.Controllers
         }
 
         // GET: /api/projects
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Project>>> GetProjects()
         {
+            var username = User.Identity?.Name;
+            if (string.IsNullOrWhiteSpace(username))
+                return Unauthorized();
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            if (user == null)
+                return Unauthorized();
+
             var projects = await _context.Projects
+                .Where(p => p.OwnerId == user.Id)
                 .Include(p => p.Owner)
                 .Include(p => p.Tasks)
                 .ToListAsync();
@@ -29,19 +40,17 @@ namespace TaskFlow.Controllers
             return Ok(projects);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<Project>> CreateProject(ProjectCreateDto dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Name))
-            {
-                return BadRequest("Project name is required.");
-            }
+            var username = User.Identity?.Name;
+            if (string.IsNullOrWhiteSpace(username))
+                return Unauthorized();
 
-            var owner = await _context.Users.FindAsync(dto.OwnerId);
+            var owner = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
             if (owner == null)
-            {
-                return BadRequest("Invalid owner ID.");
-            }
+                return Unauthorized();
 
             var project = new Project
             {
@@ -59,6 +68,7 @@ namespace TaskFlow.Controllers
             return CreatedAtAction(nameof(GetProjects), new { id = project.Id }, project);
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProject(int id)
         {
